@@ -1,25 +1,36 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { Button } from 'semantic-ui-react';
+
+import axios from 'axios'
 import './App.css';
+import Get from './scripts/stockData.js'
+
+import SearchView from './components/search.js'
+import ListView from './components/listView.js'
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      portfolio: ['ita', 'aaxn', 'amzn', 'dg']
+    }
+  }
+
+
+  componentDidMount() {
+    Get.singleStockChart('fb', '1d')
+    Get.listLoad(this.state.portfolio)
+    this.state.portfolio.map(item => Get.singleStockQuote(item))
+    this.state.portfolio.map(item => Get.singleStockNews(item))
+    this.state.portfolio.map(item => Get.singleStockPeers(item))
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <SearchView/>
+        <ListView/>
+
       </div>
     );
   }
