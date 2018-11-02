@@ -5,7 +5,7 @@ class SearchView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      addBox: null
+      addBox: ''
     }
   this.handleClick = this.handleClick.bind(this);
   this.handleChange = this.handleChange.bind(this);
@@ -13,13 +13,14 @@ class SearchView extends Component {
 
 
   handleChange(e){
-    this.setState({addBox: e.target.value})
+    this.setState({addBox: e.target.value.toLowerCase()})
     
   }
 
   handleClick(e){
     console.log(this.state.addBox)
     this.props.addStock(this.state.addBox)
+    this.setState({addBox: ''})
   }
 
   render() {
@@ -27,7 +28,7 @@ class SearchView extends Component {
       <Fragment>
         <Grid>
         <Grid.Column width={6}>
-          <Input action={<Button icon='plus' onClick={this.handleClick} />} onChange={this.handleChange} placeholder='SYMBOL'/>
+          <Input value={this.state.addBox} action={<Button icon='plus' onClick={this.handleClick} />} onChange={this.handleChange} placeholder='SYMBOL'/>
         </Grid.Column>
         </Grid>
       </Fragment>

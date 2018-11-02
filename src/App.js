@@ -20,21 +20,19 @@ class App extends Component {
 
 
   componentDidMount() {
+    // Get.singleStockQuote('fb').then(res => (console.log('this is sparta', res)))
+
     let data = this.state.portfolio.toString()
     axios.get(`https://api.iextrading.com/1.0/stock/market/batch?symbols=${data}&types=quote,news,chart&range=1m&last=5`)
         .then(res => {
-          console.log('listLoad', res.data)
           let list = [];
           for (var i in res.data) {
           let obj = res.data[i]
-
           list.push(obj)
           }
-        console.log('dalkjfdsakjfldsafjlk', list)
         let newState = this.state;
         newState.data = list
         this.setState(newState)
-        console.log('yoyo', this.state)
       });
   }
   componentDidUpdate(){
@@ -42,26 +40,40 @@ class App extends Component {
   }
 
   addStock(symbol){
-    let newPortfolio = this.state.portfolio;
-    newPortfolio.push(symbol);
-    this.setState({ portfolio: [...this.state.portfolio, newPortfolio]});
-    console.log('newlist state', this.state.portfolio)
-    let data = this.state.portfolio.toString()
-    axios.get(`https://api.iextrading.com/1.0/stock/market/batch?symbols=${data}&types=quote,news,chart&range=1m&last=5`)
+      let errCheck
+      axios.get(`https://api.iextrading.com/1.0/stock/${symbol}/quote`)
         .then(res => {
-          console.log('listLoad', res.data)
-          let list = [];
-          for (var i in res.data) {
-          let obj = res.data[i]
+          errCheck = false
+      }).catch(err => {
+         errCheck = true
+      }).then(res => {
+        if(this.state.portfolio.includes(symbol)){
+          alert('Your Portfolio Already Contains This Symbol')
+        }else if(errCheck === true){
+          alert('That Symbol Does Not Exist')
+        }else{
+          let newPortfolio = this.state;
+          newPortfolio.portfolio.push(symbol);
+          this.setState(newPortfolio);
+          console.log('newlist state', this.state.portfolio)
+          let data = this.state.portfolio.toString()
+          axios.get(`https://api.iextrading.com/1.0/stock/market/batch?symbols=${data}&types=quote,news,chart&range=1m&last=5`)
+              .then(res => {
+                console.log('listLoad', res.data)
+                let list = [];
+                for (var i in res.data) {
+                let obj = res.data[i]
 
-          list.push(obj)
+                list.push(obj)
+                }
+              console.log('dalkjfdsakjfldsafjlk', list)
+              let newState = this.state;
+              newState.data = list
+              this.setState(newState)
+              console.log('yoyo', this.state)
+            });
           }
-        console.log('dalkjfdsakjfldsafjlk', list)
-        let newState = this.state;
-        newState.data = list
-        this.setState(newState)
-        console.log('yoyo', this.state)
-      });
+      })
   }
 
 
