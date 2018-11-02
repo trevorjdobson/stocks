@@ -10,12 +10,16 @@ class SearchView extends Component {
   this.handleClick = this.handleClick.bind(this);
   this.handleChange = this.handleChange.bind(this);
   }
+
+
   handleChange(e){
     this.setState({addBox: e.target.value})
+    
   }
 
   handleClick(e){
     console.log(this.state.addBox)
+    this.props.addStock(this.state.addBox)
   }
 
   render() {
@@ -23,7 +27,7 @@ class SearchView extends Component {
       <Fragment>
         <Grid>
         <Grid.Column width={6}>
-          <Input action={<Button icon='plus' onClick={this.handleClick} />} onChange={this.handleChange}/>
+          <Input action={<Button icon='plus' onClick={this.handleClick} />} onChange={this.handleChange} placeholder='SYMBOL'/>
         </Grid.Column>
         </Grid>
       </Fragment>

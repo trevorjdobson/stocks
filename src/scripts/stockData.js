@@ -18,7 +18,18 @@ const Get = {
     console.log(data)
     axios.get(`https://api.iextrading.com/1.0/stock/market/batch?symbols=${data}&types=quote,news,chart&range=1m&last=5`)
         .then(res => {
-          console.log('listLoad', res)
+          console.log('listLoad', res.data)
+          let list = [];
+        for (var i in res.data) {
+          let obj = res.data[i]
+
+          list.push(obj)
+          }
+        console.log(list)
+        return list
+        // this.setState({guestList: list})
+        // console.log(this.state)
+
       })
   },
 
