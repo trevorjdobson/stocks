@@ -3,6 +3,14 @@ import { Button, Comment, Form, Header, Image, Grid, Segment, List, Icon, Input,
 import axios from 'axios'
 import Get from '../scripts/stockData.js'
 import ListItem from './listItem.js'
+
+
+const negativeStyle = {
+    color: 'red'
+  }
+const positiveStyle = {
+  color: 'green'
+}
 class ListView extends Component {
   constructor(props) {
     super(props);
@@ -22,7 +30,7 @@ class ListView extends Component {
   handleClick(){
     console.log('clickity click')
   }
-
+  
 
   render() {
     return (
@@ -30,14 +38,19 @@ class ListView extends Component {
         <List divided inverted relaxed>
         {this.props.data.map((symbol, i) => {
           
-          return <Modal trigger={<List.Item as='a' onClick={this.handleClick}>
+          return <Modal  key={i} trigger={<List.Item as='a' onClick={this.handleClick}>
             <List.Content floated='left'>
-              <List.Header floated='left'>{symbol.quote.symbol}</List.Header>
+              <List.Header floated='left' >{symbol.quote.symbol}</List.Header>
               <List.Description>{symbol.quote.companyName}</List.Description>
             </List.Content>
             <List.Content floated='right'>
               <List.Header>${symbol.quote.latestPrice}</List.Header>
-              <List.Description>${symbol.quote.change} %{Math.round(symbol.quote.changePercent*10000)/100}</List.Description>
+              {(Math.sign(symbol.quote.change) === 1)? (
+                <List.Description style ={positiveStyle}>${symbol.quote.change} %{Math.round(symbol.quote.changePercent*10000)/100}</List.Description>
+              ) : (
+                <List.Description style= {negativeStyle}>${symbol.quote.change} %{Math.round(symbol.quote.changePercent*10000)/100}</List.Description>
+              )}
+              
             </List.Content>  
           </List.Item>
           }>
