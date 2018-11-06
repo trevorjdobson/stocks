@@ -12,7 +12,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      portfolio: ['ita', 'aaxn', 'amzn', 'dg'],
+      portfolio: ['ita', 'aaxn', 'amzn', 'dg', 'gm'],
       data: []
     }
     this.addStock = this.addStock.bind(this)

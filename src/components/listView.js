@@ -5,12 +5,7 @@ import Get from '../scripts/stockData.js'
 import ListItem from './listItem.js'
 
 
-const negativeStyle = {
-    color: 'red'
-  }
-const positiveStyle = {
-  color: 'green'
-}
+
 class ListView extends Component {
   constructor(props) {
     super(props);
@@ -39,18 +34,19 @@ class ListView extends Component {
         {this.props.data.map((symbol, i) => {
           
           return <Modal  key={i} trigger={<List.Item as='a' onClick={this.handleClick}>
+          <List.Content>
             <List.Content floated='left'>
               <List.Header floated='left' >{symbol.quote.symbol}</List.Header>
               <List.Description>{symbol.quote.companyName}</List.Description>
             </List.Content>
             <List.Content floated='right'>
               <List.Header>${symbol.quote.latestPrice}</List.Header>
-              {(Math.sign(symbol.quote.change) === 1)? (
-                <List.Description style ={positiveStyle}>${symbol.quote.change} %{Math.round(symbol.quote.changePercent*10000)/100}</List.Description>
+              {(Math.sign(symbol.quote.change) === 1 || Math.sign(symbol.quote.change) === 0)? (
+                <List.Description style ={{color: 'green'}}>${symbol.quote.change} %{Math.round(symbol.quote.changePercent*10000)/100}</List.Description>
               ) : (
-                <List.Description style= {negativeStyle}>${symbol.quote.change} %{Math.round(symbol.quote.changePercent*10000)/100}</List.Description>
+                <List.Description style= {{color: 'red'}}>${symbol.quote.change} %{Math.round(symbol.quote.changePercent*10000)/100}</List.Description>
               )}
-              
+              </List.Content>
             </List.Content>  
           </List.Item>
           }>
