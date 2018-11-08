@@ -21,7 +21,7 @@ class App extends Component {
 
   componentDidMount() {
     // Get.singleStockQuote('fb').then(res => (console.log('this is sparta', res)))
-
+    if(!localStorage.getItem('state')){
     let data = this.state.portfolio.toString()
     axios.get(`https://api.iextrading.com/1.0/stock/market/batch?symbols=${data}&types=quote,news,chart&range=1m&last=5`)
         .then(res => {
@@ -34,12 +34,34 @@ class App extends Component {
         newState.data = list
         this.setState(newState)
       });
+  }else{
+    console.log('the local state is', localStorage.getItem('state'))
+    let portfolio = JSON.parse(localStorage.getItem('state'))
+    let stocks = portfolio.toString()
+    
+    axios.get(`https://api.iextrading.com/1.0/stock/market/batch?symbols=${stocks}&types=quote,news,chart&range=1m&last=5`)
+        .then(res => {
+          let list = [];
+          for (var i in res.data) {
+          let obj = res.data[i]
+          list.push(obj)
+          }
+        let newState = this.state;
+        newState.data = list
+        console.log(newState.portfolio)
+        newState.portfolio = portfolio
+        console.log(newState.portfolio)
+        this.setState(newState)
+      });
+    
+  }
   }
   componentDidUpdate(){
     
   }
 
   addStock(symbol){
+      console.log(this.state.portfolio)
       let errCheck
       axios.get(`https://api.iextrading.com/1.0/stock/${symbol}/quote`)
         .then(res => {
@@ -53,7 +75,9 @@ class App extends Component {
           alert('That Symbol Does Not Exist')
         }else{
           let newPortfolio = this.state;
+          console.log('wtf',)
           newPortfolio.portfolio.push(symbol);
+          
           this.setState(newPortfolio);
           console.log('newlist state', this.state.portfolio)
           let data = this.state.portfolio.toString()
@@ -71,6 +95,8 @@ class App extends Component {
               newState.data = list
               this.setState(newState)
               console.log('yoyo', this.state)
+              localStorage.setItem('state', JSON.stringify(newPortfolio.portfolio))
+              console.log('local storage', localStorage.getItem('state'))
             });
           }
       })

@@ -36,11 +36,11 @@ class ListView extends Component {
           return <Modal  key={i} trigger={<List.Item as='a' onClick={this.handleClick}>
           <List.Content>
             <List.Content floated='left'>
-              <List.Header floated='left' >{symbol.quote.symbol}</List.Header>
+              <List.Header  style={{textAlign: 'left'}}>{symbol.quote.symbol}</List.Header>
               <List.Description>{symbol.quote.companyName}</List.Description>
             </List.Content>
             <List.Content floated='right'>
-              <List.Header>${symbol.quote.latestPrice}</List.Header>
+              <List.Header style={{textAlign: 'right'}}>${symbol.quote.latestPrice}</List.Header>
               {(Math.sign(symbol.quote.change) === 1 || Math.sign(symbol.quote.change) === 0)? (
                 <List.Description style ={{color: 'green'}}>${symbol.quote.change} %{Math.round(symbol.quote.changePercent*10000)/100}</List.Description>
               ) : (
