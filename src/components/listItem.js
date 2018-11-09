@@ -35,7 +35,7 @@ class ListView extends Component {
   render() {
     return (
       <div>
-      <Modal.Header>{this.props.stock.quote.companyName}</Modal.Header>
+      <Modal.Header>{this.props.stock.quote.companyName} ({this.props.stock.quote.symbol})</Modal.Header>
         <Menu tabular>
         <Menu.Item name='Current' active={this.state.activeItem === 'Current'} onClick={this.handleItemClick} />
         <Menu.Item name='Charts' active={this.state.activeItem === 'Charts'} onClick={this.handleItemClick} />

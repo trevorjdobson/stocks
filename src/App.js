@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from 'semantic-ui-react';
+import { Button, Menu, Dropdown, Icon } from 'semantic-ui-react';
 
 import axios from 'axios'
 import './App.css';
@@ -12,10 +12,13 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      portfolio: ['ita', 'aaxn', 'amzn', 'dg', 'gm'],
-      data: []
+      portfolio: ['googl', 'aapl', 'amzn', 'ibm', 'orcl'],
+      data: [],
+      view: 'live'
     }
     this.addStock = this.addStock.bind(this)
+    this.moveView = this.moveView.bind(this)
+    this.deleteView = this.deleteView.bind(this)
   }
 
 
@@ -102,12 +105,34 @@ class App extends Component {
       })
   }
 
+  moveView(){
+    let newState = this.state
+    newState.view = 'move'
+    this.setState(newState)
+  }
+  deleteView(){
+    let newState = this.state
+    newState.view = 'delete'
+    this.setState(newState)
+  }
 
   render() {
     return (
+      
       <div className="App">
-        <SearchView addStock={this.addStock}/>
-        <ListView data={this.state.data}/>
+      <Menu fixed='top' borderless size='huge'  style={{backgroundColor: '#006494'}}>    
+        <Menu.Item postion='left'>STK</Menu.Item> 
+         <Menu.Menu position='right'>
+          <Dropdown item icon='ellipsis vertical'>          
+            <Dropdown.Menu >        
+              <Dropdown.Item onClick={this.moveView}>Move Symbols</Dropdown.Item>
+              <Dropdown.Item onClick={this.deleteView}>Delete Symbols</Dropdown.Item>         
+            </Dropdown.Menu>
+          </Dropdown>
+        </Menu.Menu>
+      </Menu>
+        <SearchView addStock={this.addStock} />
+        <ListView  view = {this.state.view} data={this.state.data}/>
 
       </div>
     );
