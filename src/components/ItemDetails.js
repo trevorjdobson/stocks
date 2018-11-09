@@ -24,9 +24,6 @@ class ListView extends Component {
       <div>
       
           <Modal.Content>
-          {this.props.stock.quote.symbol}
-          </Modal.Content>
-          <Modal.Content>
           CURRENT: ${this.props.stock.quote.latestPrice}
           </Modal.Content>
           <Modal.Content>

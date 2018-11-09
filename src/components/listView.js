@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Button, Comment, Form, Header, Image, Grid, Segment, List, Icon, Input, TextArea, Modal, Checkbox, Divider, Feed, Search } from 'semantic-ui-react'
 import axios from 'axios'
 import Get from '../scripts/stockData.js'
@@ -29,31 +29,55 @@ class ListView extends Component {
 
   render() {
     return (
-      <Segment inverted>
+      <Segment inverted style={{maxWidth: '800px'}}>
         <List divided inverted relaxed>
-        {this.props.data.map((symbol, i) => {
+        {this.props.data.map((symbol, i) => {   
+          return <Fragment>
+            {this.props.view === 'live'? 
+             <Modal  key={i} trigger={<List.Item as='a' onClick={this.handleClick}>
+              <List.Content>
+                <List.Content floated='left'>
+                  <List.Header  style={{textAlign: 'left'}}>{symbol.quote.symbol}</List.Header>
+                  <List.Description>{symbol.quote.companyName}</List.Description>
+                </List.Content>
+                <List.Content floated='right'>
+                  <List.Header style={{textAlign: 'right'}}>${symbol.quote.latestPrice.toFixed(2)}</List.Header>
+                  {(Math.sign(symbol.quote.change) === 1 || Math.sign(symbol.quote.change) === 0)? (
+                    <List.Description style ={{color: 'green'}}><Icon name='triangle up' color='green'/>${symbol.quote.change} | %{Math.round(symbol.quote.changePercent*10000)/100}</List.Description>
+                  ) : (
+                    <List.Description style= {{color: 'red'}}><Icon name='triangle down' color='red'/>${symbol.quote.change} | %{Math.round(symbol.quote.changePercent*10000)/100}</List.Description>
+                  )}
+                  </List.Content>
+                </List.Content>  
+              </List.Item>
+              }>
+              <Modal.Content>
+                <ListItem stock={symbol}/>
+              </Modal.Content>
+              </Modal>
+                : 
+                <List.Item key={i}>
+                <List.Content>
+              {this.props.view === 'move'? <div><Button floated ='left' icon='arrow up'/> <Button floated= 'left' icon='arrow down'/> </div>:<Button floated='left' icon='trash alternate'/>}
           
-          return <Modal  key={i} trigger={<List.Item as='a' onClick={this.handleClick}>
-          <List.Content>
             <List.Content floated='left'>
-              <List.Header floated='left' >{symbol.quote.symbol}</List.Header>
+              <List.Header  style={{textAlign: 'left'}}>{symbol.quote.symbol}</List.Header>
               <List.Description>{symbol.quote.companyName}</List.Description>
             </List.Content>
             <List.Content floated='right'>
-              <List.Header>${symbol.quote.latestPrice}</List.Header>
+              <List.Header style={{textAlign: 'right'}}>${symbol.quote.latestPrice.toFixed(2)}</List.Header>
               {(Math.sign(symbol.quote.change) === 1 || Math.sign(symbol.quote.change) === 0)? (
-                <List.Description style ={{color: 'green'}}>${symbol.quote.change} %{Math.round(symbol.quote.changePercent*10000)/100}</List.Description>
+                <List.Description style ={{color: 'green'}}><Icon name='triangle up' color='green'/>${symbol.quote.change} | %{Math.round(symbol.quote.changePercent*10000)/100}</List.Description>
               ) : (
-                <List.Description style= {{color: 'red'}}>${symbol.quote.change} %{Math.round(symbol.quote.changePercent*10000)/100}</List.Description>
+                <List.Description style= {{color: 'red'}}><Icon name='triangle down' color='red'/>${symbol.quote.change} | %{Math.round(symbol.quote.changePercent*10000)/100}</List.Description>
               )}
               </List.Content>
             </List.Content>  
-          </List.Item>
-          }>
-          <Modal.Content>
-            <ListItem stock={symbol}/>
-          </Modal.Content>
-          </Modal>
+            </List.Item>
+
+            }
+          
+          </Fragment>
         })}
           
         </List>
