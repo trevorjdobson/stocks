@@ -19,6 +19,7 @@ class App extends Component {
     this.addStock = this.addStock.bind(this)
     this.moveView = this.moveView.bind(this)
     this.deleteView = this.deleteView.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
   }
 
 
@@ -115,6 +116,18 @@ class App extends Component {
     newState.view = 'delete'
     this.setState(newState)
   }
+  handleDelete(index){
+    let newState = this.state
+    let item = this.state.portfolio[index]
+    newState.portfolio = this.state.portfolio.filter(i => {
+      return i !== item
+    })
+    newState.data = this.state.data.filter(i => {
+      return i.quote.symbol !== item.toUpperCase()
+    })
+    this.setState(newState)
+    localStorage.setItem('state', JSON.stringify(newState.portfolio))
+  }
 
   render() {
     return (
@@ -132,7 +145,7 @@ class App extends Component {
         </Menu.Menu>
       </Menu>
         <SearchView addStock={this.addStock} />
-        <ListView  view = {this.state.view} data={this.state.data}/>
+        <ListView  handleDelete={this.handleDelete} view = {this.state.view} data={this.state.data}/>
 
       </div>
     );

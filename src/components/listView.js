@@ -13,6 +13,9 @@ class ListView extends Component {
       
     }
     this.handleClick =this.handleClick.bind(this)
+    this.handleMoveUp = this.handleMoveUp.bind(this)
+    this.handleMoveDown = this.handleMoveDown.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
   }
   componentDidMount(){
     
@@ -25,6 +28,15 @@ class ListView extends Component {
   handleClick(){
     console.log('clickity click')
   }
+  handleMoveUp(e, {index}){
+    console.log(index)
+  }
+  handleMoveDown(e, {index}){
+    console.log(index)
+  }
+  handleDelete(e, {index}){
+    this.props.handleDelete(index)
+  }
   
 
   render() {
@@ -35,10 +47,10 @@ class ListView extends Component {
           return <Fragment>
             {this.props.view === 'live'? 
              <Modal  key={i} trigger={<List.Item as='a' onClick={this.handleClick}>
-              <List.Content>
-                <List.Content floated='left'>
+              <List.Content >
+                <List.Content style={{maxWidth: '200px'}} floated='left'>
                   <List.Header  style={{textAlign: 'left'}}>{symbol.quote.symbol}</List.Header>
-                  <List.Description>{symbol.quote.companyName}</List.Description>
+                  <List.Description style={{textAlign: 'left'}}>{symbol.quote.companyName}</List.Description>
                 </List.Content>
                 <List.Content floated='right'>
                   <List.Header style={{textAlign: 'right'}}>${symbol.quote.latestPrice.toFixed(2)}</List.Header>
@@ -58,20 +70,13 @@ class ListView extends Component {
                 : 
                 <List.Item key={i}>
                 <List.Content>
-              {this.props.view === 'move'? <div><Button floated ='left' icon='arrow up'/> <Button floated= 'left' icon='arrow down'/> </div>:<Button floated='left' icon='trash alternate'/>}
+              {this.props.view === 'move'? <div><Button index={i} onClick={this.handleMoveUp} floated ='left' icon='arrow up'/> <Button index={i} onClick={this.handleMoveDown} floated= 'left' icon='arrow down'/> </div>:<Button index={i} onClick={this.handleDelete} floated='left' icon='trash alternate'/>}
           
-            <List.Content floated='left'>
+            <List.Content style={{maxWidth: '200px'}} floated='left'>
               <List.Header  style={{textAlign: 'left'}}>{symbol.quote.symbol}</List.Header>
-              <List.Description>{symbol.quote.companyName}</List.Description>
+              <List.Description style={{textAlign: 'left'}}>{symbol.quote.companyName}</List.Description>
             </List.Content>
-            <List.Content floated='right'>
-              <List.Header style={{textAlign: 'right'}}>${symbol.quote.latestPrice.toFixed(2)}</List.Header>
-              {(Math.sign(symbol.quote.change) === 1 || Math.sign(symbol.quote.change) === 0)? (
-                <List.Description style ={{color: 'green'}}><Icon name='triangle up' color='green'/>${symbol.quote.change} | %{Math.round(symbol.quote.changePercent*10000)/100}</List.Description>
-              ) : (
-                <List.Description style= {{color: 'red'}}><Icon name='triangle down' color='red'/>${symbol.quote.change} | %{Math.round(symbol.quote.changePercent*10000)/100}</List.Description>
-              )}
-              </List.Content>
+           
             </List.Content>  
             </List.Item>
 
