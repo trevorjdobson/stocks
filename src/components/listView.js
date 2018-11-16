@@ -30,13 +30,15 @@ class ListView extends Component {
   }
   handleMoveUp(e, {index}){
     console.log(index)
+    this.props.handleMoveUp(index)
   }
   handleMoveDown(e, {index}){
-    console.log(index)
+    this.props.handleMoveDown(index)
   }
   handleDelete(e, {index}){
     this.props.handleDelete(index)
   }
+
   
 
   render() {
@@ -45,7 +47,7 @@ class ListView extends Component {
         <List divided inverted relaxed>
         {this.props.data.map((symbol, i) => {   
           return <Fragment>
-            {this.props.view === 'live'? 
+            {this.props.isEditing === false? 
              <Modal  key={i} trigger={<List.Item as='a' onClick={this.handleClick}>
               <List.Content >
                 <List.Content style={{maxWidth: '200px'}} floated='left'>
@@ -70,7 +72,7 @@ class ListView extends Component {
                 : 
                 <List.Item key={i}>
                 <List.Content>
-              {this.props.view === 'move'? <div><Button index={i} onClick={this.handleMoveUp} floated ='left' icon='arrow up'/> <Button index={i} onClick={this.handleMoveDown} floated= 'left' icon='arrow down'/> </div>:<Button index={i} onClick={this.handleDelete} floated='left' icon='trash alternate'/>}
+              <div><Button index={i} onClick={this.handleMoveUp} floated ='left' icon='arrow up'/> <Button index={i} onClick={this.handleMoveDown} floated= 'left' icon='arrow down'/> <Button index={i} onClick={this.handleDelete} floated='left' icon='trash alternate'/></div>
           
             <List.Content style={{maxWidth: '200px'}} floated='left'>
               <List.Header  style={{textAlign: 'left'}}>{symbol.quote.symbol}</List.Header>

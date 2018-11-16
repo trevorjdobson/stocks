@@ -28,7 +28,7 @@ class SearchView extends Component {
       <Fragment float='left'>
         <Grid>
         <Grid.Column width={6}>
-          <Input value={this.state.addBox} action={<Button icon='plus' onClick={this.handleClick} />} onChange={this.handleChange} placeholder='SYMBOL'/>
+          <Input style={{width:'85px'}} maxLength='5' value={this.state.addBox} action={<Button icon='plus' onClick={this.handleClick} />} onChange={this.handleChange} placeholder='symbol'/>
         </Grid.Column>
         </Grid>
       </Fragment>

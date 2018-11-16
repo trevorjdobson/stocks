@@ -14,12 +14,13 @@ class App extends Component {
     this.state = {
       portfolio: ['googl', 'aapl', 'amzn', 'ibm', 'orcl'],
       data: [],
-      view: 'live'
+      isEditing: false
     }
     this.addStock = this.addStock.bind(this)
-    this.moveView = this.moveView.bind(this)
-    this.deleteView = this.deleteView.bind(this)
+    this.toggleView = this.toggleView.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
+    this.handleMoveUp = this.handleMoveUp.bind(this)
+    this.handleMoveDown = this.handleMoveDown.bind(this)
   }
 
 
@@ -106,15 +107,16 @@ class App extends Component {
       })
   }
 
-  moveView(){
+  toggleView(){
+    if(this.state.isEditing === true){
     let newState = this.state
-    newState.view = 'move'
+    newState.isEditing = false
     this.setState(newState)
-  }
-  deleteView(){
+    }else{
     let newState = this.state
-    newState.view = 'delete'
+    newState.isEditing = true
     this.setState(newState)
+    }
   }
   handleDelete(index){
     let newState = this.state
@@ -128,24 +130,81 @@ class App extends Component {
     this.setState(newState)
     localStorage.setItem('state', JSON.stringify(newState.portfolio))
   }
+  handleMoveUp(index){
+    let newState = this.state
+    if(index === 0){
+      let element = newState.portfolio.shift()
+      newState.portfolio.push(element)
+      element = newState.data.shift()
+      newState.data.push(element);
+      this.setState(newState)
+      localStorage.setItem('state', JSON.stringify(newState.portfolio))
+    } else {
+      let elementOne = newState.portfolio[index];
+      let elementTwo = newState.portfolio[index-1];
+      newState.portfolio[index-1] = elementOne;
+      newState.portfolio[index] = elementTwo;
+      elementOne = newState.data[index];
+      elementTwo = newState.data[index-1];
+      newState.data[index-1] = elementOne;
+      newState.data[index] = elementTwo;
+      this.setState(newState)
+      localStorage.setItem('state', JSON.stringify(newState.portfolio))
+    }
+  }
+  handleMoveDown(index){
+    console.log(index)
+    let newState = this.state
+    if(index === newState.portfolio.length-1){
+      let element = newState.portfolio.pop()
+      newState.portfolio.unshift(element)
+      element = newState.data.pop()
+      newState.data.unshift(element);
+      this.setState(newState)
+      localStorage.setItem('state', JSON.stringify(newState.portfolio))
+    } else {
+      let elementOne = newState.portfolio[index];
+      let elementTwo = newState.portfolio[index+1];
+      newState.portfolio[index+1] = elementOne;
+      newState.portfolio[index] = elementTwo;
+      elementOne = newState.data[index];
+      elementTwo = newState.data[index+1];
+      newState.data[index+1] = elementOne;
+      newState.data[index] = elementTwo;
+      this.setState(newState)
+      localStorage.setItem('state', JSON.stringify(newState.portfolio))
+    }
+  }
 
   render() {
     return (
       
-      <div className="App">
-      <Menu fixed='top' borderless size='huge'  style={{backgroundColor: '#006494'}}>    
-        <Menu.Item postion='left'>STK</Menu.Item> 
-         <Menu.Menu position='right'>
-          <Dropdown item icon='ellipsis vertical'>          
-            <Dropdown.Menu >        
-              <Dropdown.Item onClick={this.moveView}>Move Symbols</Dropdown.Item>
-              <Dropdown.Item onClick={this.deleteView}>Delete Symbols</Dropdown.Item>         
-            </Dropdown.Menu>
-          </Dropdown>
-        </Menu.Menu>
+      <div className="App" style={{
+          margin: 'auto',
+        }}>
+      <Menu fixed='top' borderless size='big'  style={{backgroundColor: '#006494', marginBottom: '100px'}}>    
+        <Menu.Item postion='right'>
+          <SearchView addStock={this.addStock} />
+        </Menu.Item>
+         <Menu.Item position='right'>
+          {this.state.isEditing === false? 
+          <Button item icon='edit' onClick={this.toggleView}></Button>
+          : <Button item icon='check' color='green' onClick={this.toggleView}></Button>
+          }
+        </Menu.Item>
       </Menu>
-        <SearchView addStock={this.addStock} />
-        <ListView  handleDelete={this.handleDelete} view = {this.state.view} data={this.state.data}/>
+        
+        <ListView 
+        style={{
+          display: 'block',
+          margin: 'auto',
+          width: '50%'
+        }}
+          handleDelete={this.handleDelete} 
+          handleMoveUp={this.handleMoveUp}
+          handleMoveDown={this.handleMoveDown}
+          isEditing = {this.state.isEditing} 
+          data={this.state.data}/>
 
       </div>
     );
