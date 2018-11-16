@@ -43,7 +43,7 @@ class ListView extends Component {
 
   render() {
     return (
-      <Segment inverted style={{maxWidth: '800px'}}>
+      <Segment inverted >
         <List divided inverted relaxed>
         {this.props.data.map((symbol, i) => {   
           return <Fragment>

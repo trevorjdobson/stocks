@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Menu, Dropdown, Icon } from 'semantic-ui-react';
+import { Button, Menu, Dropdown, Icon, Image } from 'semantic-ui-react';
 
 import axios from 'axios'
 import './App.css';
@@ -182,24 +182,29 @@ class App extends Component {
       <div className="App" style={{
           margin: 'auto',
         }}>
-      <Menu fixed='top' borderless size='big'  style={{backgroundColor: '#006494', marginBottom: '100px'}}>    
-        <Menu.Item postion='right'>
-          <SearchView addStock={this.addStock} />
+        <div style={{marginBottom: '100px'}}>
+      <Menu fixed='top' borderless size='small'  style={{backgroundColor: '#006494', marginBottom: '100px'}}>
+      
+      
+      <Menu.Menu position='left'>
+      <Menu.Item>
+        <div>
+        <SearchView addStock={this.addStock} />
+        </div>
+      </Menu.Item>
+      </Menu.Menu>
+      <Menu.Menu position='right'>    
+        <Menu.Item >  
+          <Image circular size='mini'src='https://banner2.kisspng.com/20180424/rle/kisspng-stock-market-computer-icons-chart-stock-exchange-move-forward-5adf6082d95005.8565594015245886748901.jpg'></Image>          
         </Menu.Item>
-         <Menu.Item position='right'>
-          {this.state.isEditing === false? 
-          <Button item icon='edit' onClick={this.toggleView}></Button>
-          : <Button item icon='check' color='green' onClick={this.toggleView}></Button>
-          }
-        </Menu.Item>
+      </Menu.Menu>
+      
       </Menu>
+      </div>
+      <div >
         
         <ListView 
-        style={{
-          display: 'block',
-          margin: 'auto',
-          width: '50%'
-        }}
+        
           handleDelete={this.handleDelete} 
           handleMoveUp={this.handleMoveUp}
           handleMoveDown={this.handleMoveDown}
@@ -207,6 +212,13 @@ class App extends Component {
           data={this.state.data}/>
 
       </div>
+      <div style={{position: 'fixed', bottom: '5px', right: '5px'}}>
+        {this.state.isEditing === false? 
+          <Button circular item icon='edit' onClick={this.toggleView} style={{opacity:'.7'}}></Button>
+          : <Button circular item icon='check' color='green' onClick={this.toggleView}></Button>
+          }
+      </div>
+    </div>
     );
   }
 }
