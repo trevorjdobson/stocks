@@ -57,9 +57,9 @@ class ListView extends Component {
                 <List.Content floated='right'>
                   <List.Header style={{textAlign: 'right'}}>${symbol.quote.latestPrice.toFixed(2)}</List.Header>
                   {(Math.sign(symbol.quote.change) === 1 || Math.sign(symbol.quote.change) === 0)? (
-                    <List.Description style ={{color: 'green'}}><Icon name='triangle up' color='green'/>${symbol.quote.change} | %{Math.round(symbol.quote.changePercent*10000)/100}</List.Description>
+                    <List.Description style ={{color: 'green'}}><Icon name='triangle up' color='green'/>${parseFloat(Math.round(symbol.quote.change * 100) / 100).toFixed(2)} | %{parseFloat(Math.round(symbol.quote.changePercent*10000)/100).toFixed(2)}</List.Description>
                   ) : (
-                    <List.Description style= {{color: 'red'}}><Icon name='triangle down' color='red'/>${symbol.quote.change} | %{Math.round(symbol.quote.changePercent*10000)/100}</List.Description>
+                    <List.Description style= {{color: 'red'}}><Icon name='triangle down' color='red'/>${parseFloat(Math.round(symbol.quote.change * 100) / 100).toFixed(2)} | %{parseFloat(Math.round(symbol.quote.changePercent*10000)/100).toFixed(2)}</List.Description>
                   )}
                   </List.Content>
                 </List.Content>  
